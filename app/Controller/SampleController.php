@@ -1,51 +1,38 @@
-// <?php
-// App::uses('AppController', 'Controller');
-
-// class SampleController extends AppController {
-
-// 	public function index() {
-// 		$this -> autoRender = false;
-        
-//         //indexにアクセスすると，otherにリダイレクトする
-//         //redirectメソッドにアドレスを渡す
-// 		//ユーザには別のアクションの表示だとわかる
-// 		//$this->redirect("./other/");
-
-// 		//フォワード（サーバ内で別アドレスの内容を結果として出力する）
-// 		//ユーザには別のアクションの表示だとわからない
-// 		$this->setAction("other");
-// 	}
-
-// 	public function other(){
-// 		$this -> autoRender = false;
-// 		echo "<html><head></head><body>";
-// 		echo "<h1>サンプルページ</h1>";
-// 		echo "<p>これはもう１つのページです。</p>";
-// 		echo "</body></html>";
-// 	}
-
-// }
-
+<?php
 App::uses('AppController', 'Controller');
- 
+App::uses('Sanitize', 'Utility');
+
 class SampleController extends AppController {
- 
-    public function index() {
-        $this -> autoRender = false;
-        $date = new DateTime();
-        $date->setTimeZone(new DateTimeZone('Asia/Tokyo'));
-        $str = $date->format("H:i:s");
-        $this->redirect("./other/" . urlencode($str));
-    }
+
+  public function index() {
+    require_once(dirname(__FILE__). "/common.php");
+    $this->modelClass = false;
+
+    // if ($this->request->data){
+    //   $result = "[result]";
+    //   $result .= "<br>sort: ". $this->request->data['sort'];
+    //   $result .= "<br>category_id: ". $this->request->data['category_id'];
+    //   $result .= "<br>query: " . Sanitize::stripAll($this->request->data['query']);
+    // } else {
+    //   $result = "no data.";
+    // }
+    // $this->set("result", $result);
+        
+    $sort =  !empty($this->request->data["sort"]) && array_key_exists($this->request->data["sort"], $sortOrder) ? $this->request->data["sort"] : "-score";
+    $category_id = ctype_digit($this->request->data["category_id"]) && array_key_exists($this->request->data["category_id"], $categories) ? $this->request->data["category_id"] : 1;
      
-    public function other($param){
-        $this -> autoRender = false;
-        $str = urldecode($param);
-        echo "<html><head></head><body>";
-        echo "<h1>サンプルページ</h1>";
-        echo "<p>これはもう１つのページです。</p>";
-        echo "<p>送られた値: " . $str . "</p>";
-        echo "</body></html>";
-    }
+    if ($this->request->data['query'] != "") {
+        $query4url = rawurlencode($this->request->data['query']);    
+        $sort4url = rawurlencode($sort);   
+        $url = "http://shopping.yahooapis.jp/ShoppingWebService/V1/itemSearch?appid=$appid&query=$query4url&category_id=$category_id&sort=$sort4url";
+        $xml = simplexml_load_file($url);
+        if ($xml["totalResultsReturned"] != 0) {//検索件数が0件でない場合,変数$hitsに検索結果を格納します。
+            $this->set("hits", $xml->Result->Hit);
+        }
  
+        
+
+    }
+  }//index
+
 }
