@@ -37,6 +37,7 @@ class SampleController extends AppController {
 
   }//index
 
+
   public function categoryRanking(){
     //共通ファイルの読み込み
     require_once(dirname(__FILE__). "/common.php");
@@ -61,8 +62,21 @@ class SampleController extends AppController {
     }
   }//categoryRanking
 
-  public function review(){
-    
-  }
+
+  public function review($itemCode){
+    //共通ファイルの読み込み
+    require_once(dirname(__FILE__). "/common.php");
+    //モデルは使わない
+    $this->modelClass = false;
+    $this->set("itemCode", $itemCode);
+    //クエリを作って投げる．結果を格納．
+    if ($itemCode != "") {
+      $url = "http://shopping.yahooapis.jp/ShoppingWebService/V1/itemLookup?appid=$appid&itemcode=$itemCode&responsegroup=large";
+      $xml = simplexml_load_file($url);
+      if ($xml["totalResultsReturned"] != 0) {//問い合わせ結果が0件でない場合,変数$ranking_dataに問い合わせ結果を格納します。
+        $this->set("hit", $xml->Result->Hit);
+      }
+    }
+  }//review
 
 }//SampleController

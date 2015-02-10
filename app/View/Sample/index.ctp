@@ -47,6 +47,7 @@
   echo $this->Form->text('query', array('style' => 'width:200px'));
   echo $this->Form->end("検索");
   ?>
+  <hr>
 </p>
 
 
@@ -54,10 +55,13 @@
 if($hits != null){
   foreach ($hits as $hit) { ?>
 <div>
+  <?php $tmpUrl = "./review/". h($hit->Code); ?>
+  <p><a href=<?php echo $tmpUrl; ?>>レビューとSNSの口コミを見る</a></p>
   <p><a href="<?php echo h($hit->Url); ?>"><?php echo h($hit->Name); ?></a></p>
   <p><a href="<?php echo h($hit->Url); ?>">
     <img src="<?php echo h($hit->Image->Medium); ?>" /></a></p>
 </div>
+<hr>
 <?php } } ?>
 
 </div>
