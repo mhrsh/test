@@ -9,6 +9,8 @@ class SampleController extends AppController {
     require_once(dirname(__FILE__). "/common.php");
     //モデルは使わない
     $this->modelClass = false;        
+    //変数の初期化
+    $this->set("hits", null);
 
     //フォームで渡された値の有無をチェックしてローカル変数に代入  
     if(empty($this->request->data["sort"]) && array_key_exists($this->request->data["sort"], $sortOrder)){
@@ -58,5 +60,9 @@ class SampleController extends AppController {
       }
     }
   }//categoryRanking
+
+  public function review(){
+    
+  }
 
 }//SampleController
