@@ -49,13 +49,16 @@
   ?>
 </p>
 
-<?php foreach ($hits as $hit) { ?>
+
+<?php
+if($hits != null){
+  foreach ($hits as $hit) { ?>
 <div>
   <p><a href="<?php echo h($hit->Url); ?>"><?php echo h($hit->Name); ?></a></p>
   <p><a href="<?php echo h($hit->Url); ?>">
     <img src="<?php echo h($hit->Image->Medium); ?>" /></a></p>
 </div>
-<?php } ?>
+<?php } } ?>
 
 </div>
 
