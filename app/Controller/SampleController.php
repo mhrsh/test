@@ -5,6 +5,10 @@ App::uses('Sanitize', 'Utility');
 class SampleController extends AppController {
 
   public function index() {
+  }//index
+
+
+  public function search() {
     //共通ファイルの読み込み
     require_once(dirname(__FILE__). "/common.php");
     $this->set("sortOrder", $sortOrder);
@@ -35,8 +39,7 @@ class SampleController extends AppController {
       }
     }
 
-  }//index
-
+  }//search
 
   public function categoryRanking(){
     //共通ファイルの読み込み
@@ -82,5 +85,53 @@ class SampleController extends AppController {
     $this->set("tweets", $tweets);
 
   }//review
+
+
+  public function bookSearch() {
+    //共通ファイルの読み込み
+    require_once(dirname(__FILE__). "/common.php");
+    $this->set("sortOrder", $sortOrder);
+    //モデルは使わない
+    $this->modelClass = false;
+    //変数の初期化
+    $this->set("hits", null);
+    //フォームで渡された値の有無をチェックしてローカル変数に代入  
+    if(!empty($this->request->data["sort"]) && array_key_exists($this->request->data["sort"], $sortOrder)){
+      $sort = $this->request->data["sort"];
+    }else{
+      $sort = "-score"; 
+    }  
+    $category_id = "10002";
+    //クエリを作って投げる．結果を格納．
+    if ($this->request->data['query'] != "") {
+      $query4url = rawurlencode($this->request->data['query']);    
+      $sort4url = rawurlencode($sort);
+      $url = "http://shopping.yahooapis.jp/ShoppingWebService/V1/itemSearch?appid=$appid&query=$query4url&category_id=$category_id&sort=$sort4url";
+      $xml = simplexml_load_file($url);
+      if ($xml["totalResultsReturned"] != 0) {//検索件数が0件でない場合,変数$hitsに検索結果を格納します。
+        $this->set("hits", $xml->Result->Hit);
+      }
+    }
+
+  }//bookSearch
+
+
+  public function bookReview($quJan){
+    //共通ファイルの読み込み
+    require_once(dirname(__FILE__). "/common.php");
+    //require_once(dirname(__FILE__). "/twi.php");
+    //モデルは使わない
+    $this->modelClass = false;
+    $this->set("quJan", $quJan);
+    //クエリを作って投げる．結果を格納．
+    if ($quJan != "") {
+      $url = "http://shopping.yahooapis.jp/ShoppingWebService/V1/reviewSearch?appid=$appid&jan=$quJan";
+      $xml = simplexml_load_file($url);
+      if ($xml["totalResultsReturned"] != 0) {
+        $this->set("resultSet", $xml->Result);
+      }
+    }
+
+  }//bookReview
 
 }//SampleController
