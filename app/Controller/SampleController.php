@@ -7,13 +7,14 @@ class SampleController extends AppController {
   public function index() {
     //共通ファイルの読み込み
     require_once(dirname(__FILE__). "/common.php");
+    $this->set("sortOrder", $sortOrder);
+    $this->set("categories", $categories);
     //モデルは使わない
-    $this->modelClass = false;        
+    $this->modelClass = false;
     //変数の初期化
     $this->set("hits", null);
-
     //フォームで渡された値の有無をチェックしてローカル変数に代入  
-    if(empty($this->request->data["sort"]) && array_key_exists($this->request->data["sort"], $sortOrder)){
+    if(!empty($this->request->data["sort"]) && array_key_exists($this->request->data["sort"], $sortOrder)){
       $sort = $this->request->data["sort"];
     }else{
       $sort = "-score"; 
@@ -23,11 +24,10 @@ class SampleController extends AppController {
     }else{
       $category_id = 1;
     }
-
     //クエリを作って投げる．結果を格納．
     if ($this->request->data['query'] != "") {
       $query4url = rawurlencode($this->request->data['query']);    
-      $sort4url = rawurlencode($sort);   
+      $sort4url = rawurlencode($sort);
       $url = "http://shopping.yahooapis.jp/ShoppingWebService/V1/itemSearch?appid=$appid&query=$query4url&category_id=$category_id&sort=$sort4url";
       $xml = simplexml_load_file($url);
       if ($xml["totalResultsReturned"] != 0) {//検索件数が0件でない場合,変数$hitsに検索結果を格納します。
@@ -41,16 +41,15 @@ class SampleController extends AppController {
   public function categoryRanking(){
     //共通ファイルの読み込み
     require_once(dirname(__FILE__). "/common.php");
+    $this->set("categories", $categories);
     //モデルは使わない
     $this->modelClass = false;
-
     //フォームで渡された値の有無をチェックしてローカル変数に代入  
     if($category_id = ctype_digit($this->request->data["category_id"]) && array_key_exists($this->request->data["category_id"], $categories)){
       $category_id = $this->request->data["category_id"];
     }else{
       $category_id = 1;
     }
-    
     //クエリを作って投げる．結果を格納．
     if ($category_id != "") {
       $url = "http://shopping.yahooapis.jp/ShoppingWebService/V1/categoryRanking?appid=$appid&category_id=$category_id";
@@ -62,10 +61,10 @@ class SampleController extends AppController {
     }
   }//categoryRanking
 
-
   public function review($itemCode){
     //共通ファイルの読み込み
     require_once(dirname(__FILE__). "/common.php");
+    require_once(dirname(__FILE__). "/twi.php");
     //モデルは使わない
     $this->modelClass = false;
     $this->set("itemCode", $itemCode);
@@ -77,6 +76,11 @@ class SampleController extends AppController {
         $this->set("hit", $xml->Result->Hit);
       }
     }
+
+    //twitterAPIのクエリ記述
+    $tweets = getTweets($xml->Result->Hit->Name, 10);
+    $this->set("tweets", $tweets);
+
   }//review
 
 }//SampleController
