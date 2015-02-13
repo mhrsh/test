@@ -25,13 +25,13 @@ public function search() {
     }else{
       $sort = "-score"; 
     }
-    if($category_id = ctype_digit($this->request->data["category_id"]) && array_key_exists($this->request->data["category_id"], $categories)){
+    if(!empty($this->request->data["category_id"]) && ctype_digit($this->request->data["category_id"]) && array_key_exists($this->request->data["category_id"], $categories)){
       $category_id = $this->request->data["category_id"];
     }else{
       $category_id = 1;
     }
     //クエリを作って投げる．結果を格納．
-    if ($this->request->data['query'] != "") {
+    if (!empty($this->request->data["query"]) && $this->request->data['query'] != "") {
       $query4url = rawurlencode($this->request->data['query']);    
       $sort4url = rawurlencode($sort);
       $url = "http://shopping.yahooapis.jp/ShoppingWebService/V1/itemSearch?appid=$appid&query=$query4url&category_id=$category_id&sort=$sort4url";
@@ -50,8 +50,8 @@ public function search() {
     $this->set("categories", $categories);
     //モデルは使わない
     $this->modelClass = false;
-    //フォームで渡された値の有無をチェックしてローカル変数に代入  
-    if($category_id = ctype_digit($this->request->data["category_id"]) && array_key_exists($this->request->data["category_id"], $categories)){
+    //フォームで渡された値の有無をチェックしてローカル変数に代入 
+    if(!empty($this->request->data["category_id"]) && ctype_digit($this->request->data["category_id"]) && array_key_exists($this->request->data["category_id"], $categories)){
       $category_id = $this->request->data["category_id"];
     }else{
       $category_id = 1;
