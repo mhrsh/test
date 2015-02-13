@@ -1,5 +1,4 @@
-<a href="./index">商品検索APIを使ってみる</a><br>
-<a href="./categoryRanking">カテゴリランキングAPIを使ってみる</a>
+<h1>カテゴリランキングAPIを使ってみる</h1>
 
 <p>
   <?php

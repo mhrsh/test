@@ -5,6 +5,12 @@ App::uses('Sanitize', 'Utility');
 class SampleController extends AppController {
 
   public function index() {
+    $this->set("title_for_layout","index");
+  }//index
+
+
+public function search() {
+    $this->set("title_for_layout","search");
     //共通ファイルの読み込み
     require_once(dirname(__FILE__). "/common.php");
     $this->set("sortOrder", $sortOrder);
@@ -35,10 +41,10 @@ class SampleController extends AppController {
       }
     }
 
-  }//index
-
+  }//search
 
   public function categoryRanking(){
+    $this->set("title_for_layout","category ranking");
     //共通ファイルの読み込み
     require_once(dirname(__FILE__). "/common.php");
     $this->set("categories", $categories);
@@ -62,6 +68,7 @@ class SampleController extends AppController {
   }//categoryRanking
 
   public function review($itemCode){
+    $this->set("title_for_layout","review");
     //共通ファイルの読み込み
     require_once(dirname(__FILE__). "/common.php");
     require_once(dirname(__FILE__). "/twi.php");
