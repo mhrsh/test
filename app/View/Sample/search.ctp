@@ -18,13 +18,25 @@
 <?php
 if($hits != null){
   foreach ($hits as $hit) { ?>
-<div class="span4">
-  <p><a href="<?php echo h($hit->Url); ?>">
-    <img src="<?php echo h($hit->Image->Medium); ?>" /></a></p>
-  <p><a href="<?php echo h($hit->Url); ?>"><?php echo h($hit->Name); ?></a></p>
-  <p><a href=<?php echo "./review/". h($hit->Code); ?>>レビューを見る</a></p>
-</div>
-<?php } } ?>
+  <div class="span4">
+    <?php
+      echo $this->Html->image(h($hit->Image->Medium), array(
+        "alt" => h($hit->Name),
+        'url' => h($hit->Url)
+        ));
+      echo "<br>";
+      echo $this->Html->link(h($hit->Name), h($hit->Url));
+      $dispPrice = "";
+      $dispPrice .= $hit->Price;
+      echo $this->Html->tag('p',
+        "¥".number_format($dispPrice)."<br>"
+        ."レビュー平均".$hit->Review->Rate."<br>"
+        ."レビュー件数".$hit->Review->Count);
+      echo $this->Html->link("レビューを見る", "./review/". h($hit->Code));
+      // echo $this->Html->link($hit->Category->Current->Name, "./categoryRanking/". h($hit->Category->Current->Id));
+    ?>
+  </div>
+  <?php } } ?>
 </div>
 
 </div>
