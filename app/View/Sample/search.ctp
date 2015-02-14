@@ -24,8 +24,10 @@ if($hits != null){
         "alt" => h($hit->Name),
         'url' => h($hit->Url)
         ));
-      echo "<br>";
-      echo $this->Html->link(h($hit->Name), h($hit->Url));
+    ?>
+    <p class="hit-name"><a href="<?php echo h($hit->Url); ?>"><?php echo $hit->Name; ?></a></p>
+    <?php
+      // echo $this->Html->link(h($hit->Name), h($hit->Url), array('class'=>'hit-name'));
       $dispPrice = "";
       $dispPrice .= $hit->Price;
       echo $this->Html->tag('p',
@@ -38,6 +40,7 @@ if($hits != null){
   </div>
   <?php } } ?>
 </div>
+
 
 </div>
 

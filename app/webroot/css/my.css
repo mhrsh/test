@@ -1,5 +1,4 @@
-[class*="span"] {
-  float: left;
-  min-height: 1px;
-  margin-left: 20px;
+.hit-name{
+	height: 43px;
+	overflow: hidden;
 }
