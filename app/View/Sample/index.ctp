@@ -22,3 +22,5 @@
 <h1>Home</h1>
 
 <!-- todo: このページの概要とかを書く -->
+<p>XAMPP + cakephp + bootstrapでYahoo!ショッピングAPIを利用したWebサイトを構築</p>
+ 
