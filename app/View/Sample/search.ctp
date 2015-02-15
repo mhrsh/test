@@ -1,3 +1,24 @@
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <a class="brand" href="./index"><?php echo __('mhrsh/ys_api_test_2015'); ?></a>
+        <div class="nav-collapse">
+          <ul class="nav">
+            <li><a href="./index">Home</a></li>
+            <li><a href="./search">商品検索APIを使ってみる</a></li>
+            <li><a href="./categoryRanking">カテゴリランキングAPIを使ってみる</a></li>
+            <li><a href="https://github.com/mhrsh/ys_api_test_2015">GitHubページ</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+</div>
+
 <h1>商品検索APIを使ってみる</h1>
 
 <p>
@@ -34,8 +55,9 @@ if($hits != null){
         "¥".number_format($dispPrice)."<br>"
         ."レビュー平均".$hit->Review->Rate."<br>"
         ."レビュー件数".$hit->Review->Count);
-      echo $this->Html->link("レビューを見る", "./review/". h($hit->Code));
+      echo $this->Html->link("レビューとtwitter検索結果", "./review/". h($hit->Code));
       // echo $this->Html->link($hit->Category->Current->Name, "./categoryRanking/". h($hit->Category->Current->Id));
+      echo "<hr>";
     ?>
   </div>
   <?php } } ?>

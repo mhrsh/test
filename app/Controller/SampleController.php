@@ -9,7 +9,7 @@ class SampleController extends AppController {
   }//index
 
 
-public function search() {
+  public function search() {
     $this->set("title_for_layout","search");
     //共通ファイルの読み込み
     require_once(dirname(__FILE__). "/common.php");
@@ -72,6 +72,7 @@ public function search() {
     //共通ファイルの読み込み
     require_once(dirname(__FILE__). "/common.php");
     require_once(dirname(__FILE__). "/twi.php");
+    // set_include_path(get_include_path().PATH_SEPARATOR.'/sample/php_include');
     //モデルは使わない
     $this->modelClass = false;
     $this->set("itemCode", $itemCode);
@@ -85,7 +86,8 @@ public function search() {
     }
 
     //twitterAPIのクエリ記述
-    $tweets = getTweets($xml->Result->Hit->Name, 10);
+    // $tweets = getTweets($xml->Result->Hit->Name, 10);
+    $tweets = getTweets($this->request->data['twiSearch'], 10);
     $this->set("tweets", $tweets);
 
   }//review
