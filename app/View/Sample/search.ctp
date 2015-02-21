@@ -55,7 +55,11 @@ if($hits != null){
         "¥".number_format($dispPrice)."<br>"
         ."レビュー平均".$hit->Review->Rate."<br>"
         ."レビュー件数".$hit->Review->Count);
-      echo $this->Html->link("レビューとtwitter検索結果", "./review/". h($hit->Code));
+      //echo $this->Html->link("レビューとtwitter検索結果", "./review/". h($hit->Code));
+
+      //レビュー検索APIのリクエストパラメータ用のストアIDと商品コードをreviewに渡す．
+      echo $this->Html->link("レビューとtwitter検索結果", "./review/". h($hit->Store->Id)."_".h($hit->Code));
+
       // echo $this->Html->link($hit->Category->Current->Name, "./categoryRanking/". h($hit->Category->Current->Id));
       echo "<hr>";
     ?>

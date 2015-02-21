@@ -67,6 +67,7 @@ class SampleController extends AppController {
     }
   }//categoryRanking
 
+  //public function review($itemCode){
   public function review($itemCode){
     $this->set("title_for_layout","review");
     //共通ファイルの読み込み
@@ -75,10 +76,14 @@ class SampleController extends AppController {
     // set_include_path(get_include_path().PATH_SEPARATOR.'/sample/php_include');
     //モデルは使わない
     $this->modelClass = false;
-    $this->set("itemCode", $itemCode);
+    //$this->autoRender = false;
+
+    //$this->set("itemCode", $itemCode);
     //クエリを作って投げる．結果を格納．
     if ($itemCode != "") {
-      $url = "http://shopping.yahooapis.jp/ShoppingWebService/V1/itemLookup?appid=$appid&itemcode=$itemCode&responsegroup=large";
+      //商品コード(商品詳細)検索
+      //$url = "http://shopping.yahooapis.jp/ShoppingWebService/V1/itemLookup?appid=$appid&itemcode=$itemCode&responsegroup=large";
+      $url = "http://shopping.yahooapis.jp/ShoppingWebService/V1/reviewSearch?appid=$appid&store_id=$itemCode";
       $xml = simplexml_load_file($url);
       if ($xml["totalResultsReturned"] != 0) {//問い合わせ結果が0件でない場合,変数$ranking_dataに問い合わせ結果を格納します。
         $this->set("hit", $xml->Result->Hit);
